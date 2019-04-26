@@ -1,0 +1,20 @@
+<mat-grid-list cols="4" >
+  <mat-grid-tile
+      *ngFor="let tile of listMenu"
+      [colspan]="tile.cols"
+      [rowspan]="tile.rows"
+      [style.background]="tile.color"
+      >
+      <div class="item-grill" (click)="sayHello(tile)">
+          <p class="label-child">{{tile.id}}</p>
+          <div>
+              <img src="https://pixabay.com/get/e034b90b2ff71c22d9584518a34d4494e573e5d319ac104490f6c378a2e4b1b1/hiker-918473_1920.jpg" height="200px" width="250px">
+          </div>
+      </div>
+  </mat-grid-tile>
+</mat-grid-list>
+
+<!-- <app-list [parentData]= "name"></app-list> -->
+
+<app-list></app-list>
+

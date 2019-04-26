@@ -29,7 +29,7 @@ export class PruebitaComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.firestoreService.getCats().subscribe((catsSnapshot) => {
+    this.firestoreService.getCats('cats').subscribe((catsSnapshot) => {
       this.cats = [];
       catsSnapshot.forEach((catData: any) => {
         this.cats.push({
@@ -47,7 +47,7 @@ export class PruebitaComponent implements OnInit {
         nombre: form.nombre,
         url: form.url
       }
-      this.firestoreService.createCat(data).then(() => {
+      this.firestoreService.createCat('cats',data).then(() => {
         console.log('Documento creado exitósamente!');
         this.newCatForm.setValue({
           nombre: '',
@@ -62,7 +62,7 @@ export class PruebitaComponent implements OnInit {
         nombre: form.nombre,
         url: form.url
       }
-      this.firestoreService.updateCat(documentId, data).then(() => {
+      this.firestoreService.updateCat('cats', documentId, data).then(() => {
         this.currentStatus = 1;
         this.newCatForm.setValue({
           nombre: '',
@@ -77,7 +77,7 @@ export class PruebitaComponent implements OnInit {
   }
 
   public editCat(documentId) {
-    let editSubscribe = this.firestoreService.getCat(documentId).subscribe((cat) => {
+    let editSubscribe = this.firestoreService.getCat('cats', documentId).subscribe((cat) => {
       let propertiesCats = {};
       this.currentStatus = 2;
       this.documentId = documentId;
@@ -92,7 +92,7 @@ export class PruebitaComponent implements OnInit {
   }
 
   public deleteCat(documentId) {
-    this.firestoreService.deleteCat(documentId).then(() => {
+    this.firestoreService.deleteCat('cats', documentId).then(() => {
       console.log('Documento eliminado!');
     }, (error) => {
       console.error(error);

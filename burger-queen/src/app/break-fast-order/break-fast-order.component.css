@@ -1,0 +1,7 @@
+.item-grill{
+    text-align: center;
+}
+    
+.item-grill:hover{
+    cursor: pointer;
+}

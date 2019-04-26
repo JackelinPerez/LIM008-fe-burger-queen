@@ -5,33 +5,34 @@ import { AngularFirestore} from '@angular/fire/firestore';
 @Injectable({
   providedIn: 'root'
 })
+
 export class FirestoreService {
   constructor(
     private firestore: AngularFirestore
   ) {}
 
   //Crea un nuevo gato
-  public createCat(data: any) {
-    return this.firestore.collection('cats').add(data);
+  public createCat(collectionId: string, data: any) {
+    return this.firestore.collection(collectionId).add(data);
   }
 
   //Obtiene un gato
-  public getCat(documentId: string) {
-    return this.firestore.collection('cats').doc(documentId).snapshotChanges();
+  public getCat(collectionId: string, documentId: string) {
+    return this.firestore.collection(collectionId).doc(documentId).snapshotChanges();
   }
 
   //Obtiene todos los gatos
-  public getCats() {
-    return this.firestore.collection('cats').snapshotChanges();
+  public getCats(collectionId: string) {
+    return this.firestore.collection(collectionId).snapshotChanges();
   }
 
   //Actualiza un gato
-  public updateCat(documentId: string, data: any) {
-    return this.firestore.collection('cats').doc(documentId).set(data);
+  public updateCat(collectionId: string, documentId: string, data: any) {
+    return this.firestore.collection(collectionId).doc(documentId).set(data);
   }
 
   //Borra un gato
-  public deleteCat(documentId: string) {
-    return this.firestore.collection('cats').doc(documentId).delete();
+  public deleteCat(collectionId: string, documentId: string) {
+    return this.firestore.collection(collectionId).doc(documentId).delete();
   }
 }

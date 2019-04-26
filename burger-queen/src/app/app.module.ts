@@ -15,14 +15,27 @@ import { environment } from '../environments/environment';
 import { PruebitaComponent } from './pruebita/pruebita.component';
 
 //pruebitas
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatTableModule, MatGridListModule } from '@angular/material';
+import { BreakFastOrderComponent } from './break-fast-order/break-fast-order.component';
+import { ListComponent } from './break-fast-order/list/list.component';
 
-
+const moduleRouther : Routes = [
+  { path: '', redirectTo: 'cats', pathMatch: 'full' },
+  { path: 'breakFast', component: BreakFastOrderComponent},
+  { path: 'cats', component: PruebitaComponent },
+]
 @NgModule({
   declarations: [
     AppComponent,
-    PruebitaComponent
+    PruebitaComponent,
+    NavMenuComponent,
+    BreakFastOrderComponent,
+    ListComponent
   ],
   imports: [
     BrowserModule,
@@ -32,10 +45,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AngularFirestoreModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot([
-      { path: '', redirectTo: 'cats', pathMatch: 'full' },
-      { path: 'cats', component: PruebitaComponent }
-    ]),    
+    RouterModule.forRoot(moduleRouther),
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    MatTableModule,
+    MatGridListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
