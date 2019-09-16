@@ -1,13 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FirestoreService } from '../services/firestore.service';
+//Pasando data a Observable
+import { ObservablesService} from '../services/observables.service';
 
-export interface Tile {
-  color: string;
-  cols: number;
-  rows: number;
-  text: string;
-  img: string;
-}
+/*Importando clase */
+import { Models} from '../models/models';
 
 @Component({
   selector: 'app-break-fast-order',
@@ -16,14 +13,16 @@ export interface Tile {
 })
 export class BreakFastOrderComponent implements OnInit {
   public listMenu = [];
-  // public parentData;
-  // @Input ("parentData") public name;
+  public selectItem = {};
+  public selectItem2 = new Models;
 
-  constructor(private firestoreService: FirestoreService) { }
+  constructor(private firestoreService: FirestoreService, private getMenuSelect: ObservablesService) { 
+  }
 
   ngOnInit() {
     this.firestoreService.getCats('desayuno').subscribe((listMenuSnapshot) => {
       this.listMenu = [];
+
       listMenuSnapshot.forEach((catData: any) => {
         const dataTemp = catData.payload.doc;
         this.listMenu.push({
@@ -31,17 +30,19 @@ export class BreakFastOrderComponent implements OnInit {
           id: dataTemp.data().id,
           text: dataTemp.data().descripcion,
           img: dataTemp.data().img,
+          cost: dataTemp.data().valor,
           cols: 2,
           rows: 1,
           color: 'lightpink',
         });
       });
-      console.log(this.listMenu);
     });
   }
 
-  public sayHello(producto: string){
-    console.log(producto);
-
-  }  
+  public sayHello(producto: Models){
+    this.selectItem2 = producto;
+    this.getMenuSelect.changeMenu(producto);
+    console.log('producto: '+producto.text + '; costo: '+producto.cost);
+    
+  }
 }

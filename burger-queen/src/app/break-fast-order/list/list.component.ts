@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild} from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service';
 
-export interface Transaction {
-  item: string;
-  cost: number;
-}
+//observando al rxjs
+import {ObservablesService} from '../../services/observables.service';
+
+/*Importando clase */
+import { Models} from '../../models/models';
+
+/*******/
+import { MatTableDataSource, MatTable } from '@angular/material';
 
 @Component({
   selector: 'app-list',
@@ -13,26 +17,31 @@ export interface Transaction {
 })
 export class ListComponent implements OnInit {
 
-  displayedColumns: string[] = ['item', 'cost'];
+  displayedColumns: string[] = ['text', 'add', 'cost', 'allCost', 'delete'];
+  listMenu : any=[];
+  listMenuAux : Models[] =[];
 
-  public listMenu = [];
-  /** Gets the total cost of all transactions. */
-  getTotalCost() {
-    return this.listMenu.map(t => parseInt(t.data.valor)).reduce((acc, value) => {acc= acc + value; return acc}, 0);
+  @Input() public parentData;
+  @ViewChild(MatTable) public table: MatTable<any>;
+
+  getTotalCost(list: any) {
+    return list.data.map(t => parseInt(t.cost)).reduce((acc, value) => {acc= acc + value; return acc}, 0);
   }
-
-  constructor(private firestoreService: FirestoreService) { }
+  constructor(public firestoreService: FirestoreService, public getMenuSelect: ObservablesService ) {
+   }
 
   ngOnInit() {
-    this.firestoreService.getCats('desayuno').subscribe((listMenuSnapshot) => {
-      this.listMenu = [];
-      listMenuSnapshot.forEach((catData: any) => {
-        this.listMenu.push({
-          id: catData.payload.doc.id,
-          data: catData.payload.doc.data()
-        });
-      });
-      console.log(this.listMenu);
+    this.getMenuSelect.currentMenu.subscribe((dataMenu: Models) =>{
+      this.listMenu.data = [];
+      if(Object.keys(dataMenu).length>0){
+        this.listMenu = new MatTableDataSource();
+        this.listMenuAux.push(dataMenu);
+        this.listMenu.data = this.listMenuAux;
+        // console.log('Llego data de observable: '+this.listMenuAux);
+        // this.listMenu.data.forEach((ele: Models)=>{
+        //   console.log('item= '+ ele.text);
+        // });
+      }
     });
   }
 
